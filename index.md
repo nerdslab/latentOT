@@ -21,7 +21,7 @@ We show this in a setting where LOT is used to fix domain shift introduced in a 
 LOT succesfully bridges the gap by aligning the source and target distributions, and we can see in figure 2 how the class manifolds are being transpored to their correct correspondant, even in the unbalanced case.
 
 ![](imgs/figure2.png)
-**Figure 2: Visualization of transport of handwritten digits **
+**Figure 2: Visualization of transport of handwritten digits**
 
 ## Citation
 
