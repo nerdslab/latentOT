@@ -1,37 +1,17 @@
-## Welcome to GitHub Pages
+## Making transport more robust and interpretable by moving data through a small number of anchor points
 
-You can use the [editor on GitHub](https://github.com/nerdslab/latentOT/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+## Abstract
+Optimal transport (OT) is a widely used technique for distribution alignment, with applications throughout the machine learning, graphics, and vision communities. Without any additional structural assumptions on transport, however, OT can be fragile to outliers or noise, especially in high dimensions. Here, we introduce a new form of structured OT that simultaneously learns low-dimensional structure in data while leveraging this structure to solve the alignment task. Compared with OT, the resulting transport plan has better structural interpretability, highlighting the connections between individual data points and local geometry, and is more robust to noise and sampling. We apply the method to synthetic as well as real datasets, where we show that our method can facilitate alignment in noisy settings and can be used to both correct and interpret domain shift.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Citation
 
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```bibtex
+@misc{lin2020making,
+      title={Making transport more robust and interpretable by moving data through a small number of anchor points}, 
+      author={Chi-Heng Lin and Mehdi Azabou and Eva L. Dyer},
+      year={2020},
+      eprint={2012.11589},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
 ```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/nerdslab/latentOT/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
