@@ -7,8 +7,7 @@ Users could customize their cost matrix to fit their clustering strategies.
 The algorithm requires two number of anchors to be pre-specified. THe numbers naturally correpsond to the numbers of clusters for the source and target.
 
 # Dependencies
-sklearn, numpy, matplotlib
-POT: Python Optimal Transport Rémi Flamary and Nicolas Courty, POT Python Optimal Transport library,
+sklearn, numpy, matplotlib, POT: Python Optimal Transport Rémi Flamary and Nicolas Courty, POT Python Optimal Transport library,
 Website: https://pythonot.github.io/, 2017
 
 # Usage
