@@ -12,6 +12,6 @@ POT: Python Optimal Transport Rémi Flamary and Nicolas Courty, POT Python Optim
 Website: https://pythonot.github.io/, 2017
 
 # Usage
-lOT contains the module for LOT. 
+lOT contains the module for LOT. lot_mnist_demo provides a simple demo on distributional alginments for pre- and post-droupout of MNIST digits. 
 
 
