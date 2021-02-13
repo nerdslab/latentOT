@@ -11,8 +11,10 @@ sklearn, numpy, matplotlib, POT: Python Optimal Transport Rémi Flamary and Nico
 Website: https://pythonot.github.io/, 2017
 
 # Usage
-lOT contains the module for LOT.
+The code contains a Python implementation on LOT.
 
-lot_mnist_demo provides a simple demo on distributional alginments for pre- and post-droupout of MNIST digits. 
+lOT.py contains the module for LOT.
+
+lot_mnist_demo.ipynb provides a simple demo on distributional alginments for pre- and post-droupout of MNIST digits. 
 
 
