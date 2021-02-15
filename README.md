@@ -6,7 +6,7 @@ Latent optimal transport (LOT) for simultaneous aligning and clustering
 
 # Overview
 
-Latent optimal transport is a low-rank distributional alignment technique. It is suitable for data admitting clustering structure, where alignment is based on a clustering level to make transport more robust to outliers and noise.
+Latent optimal transport is a low-rank distributional alignment technique. It is suitable for data admitting clustering structure, where alignment is based on a clustering level to make transport more robust to outliers and noises.
 
 Users could customize their cost matrix to fit their clustering strategies.
 
