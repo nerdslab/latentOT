@@ -6,12 +6,14 @@ Optimal transport (OT) is a widely used technique for distribution alignment, wi
 ## Method
 The main idea behind LOT is to factorize the transport plan into three components, where mass is moved: (i) from individual source points to source anchors, (ii) from the source anchors to target anchors, and (iii) from target anchors to individual target points. This is shown in Figure 1 along side other optimal transport methods.
 
+![](imgs/illus.png)
 The factorized form is written as follows:
+
+![](imgs/decom.png)
+![](imgs/lott.png)
 
 ![](https://latex.codecogs.com/svg.latex?\mathbf{P}=\mathbf{P}_{x}%20\operatorname{diag}\left(\mathbf{u}_{z}^{-1}\right)%20\mathbf{P}_{z}%20\operatorname{diag}\left(\mathbf{v}_{z}^{-1}\right)%20\mathbf{P}_{y})
 
-![](imgs/figure1_red.png)
-**Figure 1: Comparison of transport plans obtained for different methods applied to clustered data**
 
 ## Results
 The low-rank decomposition in LOT allowed us to visualize transport between the source to anchors and then from anchors to the target again. This highlights the interpretability of our approach, with the middle transport plan Pz providing a concise map of interactions between class manifolds. 
@@ -19,6 +21,9 @@ The low-rank decomposition in LOT allowed us to visualize transport between the 
 We show this in a setting where LOT is used to fix domain shift introduced in a MNIST-trained network by infering over (i) the USPS dataset (ii) a subset of MNIST (digits 2, 4, 8 removed - unbalanced transport) that is perturbed using a corase dropout transformation.
 
 LOT succesfully bridges the gap by aligning the source and target distributions, and we can see in figure 2 how the class manifolds are being transpored to their correct correspondant, even in the unbalanced case.
+
+![](imgs/figure1_red.png)
+**Figure 1: Comparison of transport plans obtained for different methods applied to clustered data**
 
 ![](imgs/minist.png)
 ![](imgs/figure2.png)
