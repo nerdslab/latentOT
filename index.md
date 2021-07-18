@@ -4,16 +4,17 @@
 Optimal transport (OT) is a widely used technique for distribution alignment, with applications throughout the machine learning, graphics, and vision communities. Without any additional structural assumptions on transport, however, OT can be fragile to outliers or noise, especially in high dimensions. Here, we introduce Latent OptimalTransport (LOT), a new approach for OT that simultaneously learns low-dimensional structure in data while leveraging this structure to solve the alignment task.  The idea behind our approach is to learn two sets of “anchors” that constrain the flow of transport between a source and target distribution. In both theoretical and empirical studies, we show thatLOTregularizes the rank of transport and makes it more robust to outliers and the sampling density. We show that by allowing the source and target to have different anchors, and using LOT to align the latent spaces between anchors,  the resulting transport plan has better structural interpretability and highlights connections between both the individual data points and the local geometry of the datasets.
 
 ## Method
-The main idea behind LOT is to factorize the transport plan into three components, where mass is moved: (i) from individual source points to source anchors, (ii) from the source anchors to target anchors, and (iii) from target anchors to individual target points. This is shown in Figure 1 along side other optimal transport methods.
-
+The main idea behind LOT is to factorize the transport plan into three components, where mass is moved: (i) from individual source points to source anchors, (ii) from the source anchors to target anchors, and (iii) from target anchors to individual target points. This is illustrated in Figure 1.
 ![](imgs/illus.png)
-The factorized form is written as follows:
+
+To translate the idea into mathematics, we propose the Latent Optimal Transport (LOT ) which solves the following optimization.
 
 ![](imgs/decom.png)
-![](imgs/lott.png)
+
+The output transport is low-rank and decomposed into 3 pieces:
 
 ![](https://latex.codecogs.com/svg.latex?\mathbf{P}=\mathbf{P}_{x}%20\operatorname{diag}\left(\mathbf{u}_{z}^{-1}\right)%20\mathbf{P}_{z}%20\operatorname{diag}\left(\mathbf{v}_{z}^{-1}\right)%20\mathbf{P}_{y})
-
+![](imgs/lott.png)
 
 ## Results
 The low-rank decomposition in LOT allowed us to visualize transport between the source to anchors and then from anchors to the target again. This highlights the interpretability of our approach, with the middle transport plan Pz providing a concise map of interactions between class manifolds. 
