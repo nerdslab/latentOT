@@ -12,7 +12,8 @@ To translate the idea into mathematics, we propose the Latent Optimal Transport 
 
 ![](imgs/decom.png)
 
-The output transport is low-rank and decomposed into 3 pieces: 
+The output transport is low-rank and decomposed into 3 pieces:
+
 ![](https://latex.codecogs.com/svg.latex?\mathbf{P}=\mathbf{P}_{x}%20\operatorname{diag}\left(\mathbf{u}_{z}^{-1}\right)%20\mathbf{P}_{z}%20\operatorname{diag}\left(\mathbf{v}_{z}^{-1}\right)%20\mathbf{P}_{y})
 
 The outer 2 pieces represents the clustering of data, and the inner piece represents the alignment of data.
