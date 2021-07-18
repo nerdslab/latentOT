@@ -10,7 +10,6 @@ The factorized form is written as follows:
 
 ![](https://latex.codecogs.com/svg.latex?\mathbf{P}=\mathbf{P}_{x}%20\operatorname{diag}\left(\mathbf{u}_{z}^{-1}\right)%20\mathbf{P}_{z}%20\operatorname{diag}\left(\mathbf{v}_{z}^{-1}\right)%20\mathbf{P}_{y})
 
-![](imgs/minist.png)
 ![](imgs/figure1_red.png)
 **Figure 1: Comparison of transport plans obtained for different methods applied to clustered data**
 
@@ -21,6 +20,7 @@ We show this in a setting where LOT is used to fix domain shift introduced in a 
 
 LOT succesfully bridges the gap by aligning the source and target distributions, and we can see in figure 2 how the class manifolds are being transpored to their correct correspondant, even in the unbalanced case.
 
+![](imgs/minist.png)
 ![](imgs/figure2.png)
 **Figure 2: Visualization of transport of handwritten digits**
 
