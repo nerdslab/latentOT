@@ -28,7 +28,7 @@ By using number of anchors as a free hyperparameters for the source and target, 
 ![](imgs/figure1_red.png)
 **Figure 3: Comparison of transport plans obtained for different methods applied to clustered data**
 
-## Results
+## Experimental Results
 The low-rank decomposition in LOT allowed us to visualize transport between the source to anchors and then from anchors to the target again. This highlights the interpretability of our approach, with the middle transport plan Pz providing a concise map of interactions between class manifolds. 
 
 We show this in a setting where LOT is used to fix domain shift introduced in a MNIST-trained network by infering over (i) the USPS dataset (ii) a subset of MNIST (digits 2, 4, 8 removed - unbalanced transport) that is perturbed using a corase dropout transformation.
