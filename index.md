@@ -10,12 +10,13 @@ The main idea behind LOT is to factorize the transport plan into three component
 
 To translate the idea into mathematics, we propose the Latent Optimal Transport (LOT ) which solves the following optimization.
 
-![](imgs/decom.png)
+![](https://latex.codecogs.com/svg.latex?\min_{\mathbf{P},z}\langle&space;\mathbf{P}_x,\mathbf{C}_x\rangle&space;&plus;&space;\langle&space;\mathbf{P}_z,\mathbf{C}_z\rangle&space;&plus;&space;\langle&space;\mathbf{P}_y,\mathbf{C}_y\rangle)
+
+![](https://latex.codecogs.com/svg.latex?s.t.~\mathbf{P}_x1=\mu,~\mathbf{P}^T_y1=\nu,~\mathbf{P}^T_x1=z_x,~\mathbf{P}_y1=z_y,~\mathbf{P}_z1=z_x,~\mathbf{P}^T_z1=z_y)
 
 The output transport is low-rank and decomposed into 3 pieces:
 
 ![](https://latex.codecogs.com/svg.latex?\mathbf{P}=\mathbf{P}_{x}%20\operatorname{diag}\left(\mathbf{u}_{z}^{-1}\right)%20\mathbf{P}_{z}%20\operatorname{diag}\left(\mathbf{v}_{z}^{-1}\right)%20\mathbf{P}_{y})
-
 The outer 2 pieces represents the clustering of data, and the inner piece represents the alignment of data.
 ![](imgs/lott.png)
 
