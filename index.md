@@ -6,14 +6,16 @@ Optimal transport (OT) is a widely used technique for distribution alignment, wi
 ## Method
 The main idea behind LOT is to factorize the transport plan into three components, where mass is moved: (i) from individual source points to source anchors, (ii) from the source anchors to target anchors, and (iii) from target anchors to individual target points. This is illustrated in Figure 1.
 ![](imgs/illus.png)
+**Figure 1: A transport consists of moving mass from the data to anchors, and the anchors to anchors**
 
 To translate the idea into mathematics, we propose the Latent Optimal Transport (LOT ) which solves the following optimization.
 
 ![](imgs/decom.png)
 
-The output transport is low-rank and decomposed into 3 pieces:
-
+The output transport is low-rank and decomposed into 3 pieces: 
 ![](https://latex.codecogs.com/svg.latex?\mathbf{P}=\mathbf{P}_{x}%20\operatorname{diag}\left(\mathbf{u}_{z}^{-1}\right)%20\mathbf{P}_{z}%20\operatorname{diag}\left(\mathbf{v}_{z}^{-1}\right)%20\mathbf{P}_{y})
+
+The outer 2 pieces represents the clustering of data, and the inner piece represents the alignment of data.
 ![](imgs/lott.png)
 
 ## Results
@@ -24,11 +26,11 @@ We show this in a setting where LOT is used to fix domain shift introduced in a 
 LOT succesfully bridges the gap by aligning the source and target distributions, and we can see in figure 2 how the class manifolds are being transpored to their correct correspondant, even in the unbalanced case.
 
 ![](imgs/figure1_red.png)
-**Figure 1: Comparison of transport plans obtained for different methods applied to clustered data**
+**Figure 2: Comparison of transport plans obtained for different methods applied to clustered data**
 
 ![](imgs/minist.png)
 ![](imgs/figure2.png)
-**Figure 2: Visualization of transport of handwritten digits**
+**Figure 3: Visualization of transport of handwritten digits**
 
 ## Citation
 
