@@ -1,77 +1,65 @@
-import ot
-from sklearn.cluster import KMeans
+
 import numpy as np
 from numpy import linalg as LA
 
+from .utils import compute_kmeans_centroids, compute_cost_matrix
+
 
 class LOT:
-    def __init__(self, n_cluster_source=5, n_cluster_target=20, epsilon=1, epsilon_z=1, intensity=[50, 10, 50], floyditer=50,
-         tolratio=1e-7, normNum=2, init='kmeans', random_state=None):
-        self.n_cluster_source, self.n_cluster_target = n_cluster_source, n_cluster_target
+    def __init__(self, n_source_anchors, n_target_anchors, epsilon=1, epsilon_z=1, intensity=[10, 10, 10], floyditer=50,
+                 tolratio=1e-7, norm=2, random_state=None):
+        self.n_source_anchors, self.n_target_anchors = n_source_anchors, n_target_anchors
+
         self.epsilon = epsilon
         self.epsilon_z = epsilon_z
+
         self.intensity = intensity
         self.niter = floyditer
         self.tolratio = tolratio
-        self.p = normNum
-        self.init = init
+        self.p = norm
+
         self.random_state = random_state
 
-        if not self.init == 'kmeans':
-            raise NotImplementedError
-
-    def __call__(self, source, target):
+    def fit(self, source, target):
         # centroid initialized by K-means
-        Cx = self._compute_kmeans_centroids(source, n_clusters=self.n_cluster_source, random_state=self.random_state)
-        Cy = self._compute_kmeans_centroids(target, n_clusters=self.n_cluster_target, random_state=self.random_state)
+        Cx = compute_kmeans_centroids(source, n_clusters=self.n_source_anchors, random_state=self.random_state)
+        Cy = compute_kmeans_centroids(target, n_clusters=self.n_target_anchors, random_state=self.random_state)
         # Px, Py initialized by K-means and one-sided OT
         n = source.shape[0]
         m = target.shape[0]
         mu = 1 / n * np.ones([n, 1])
         nu = 1 / m * np.ones([m, 1])
-        cost_xy = self._compute_cost_matrix(source, target, p=self.p)
+        cost_xy = compute_cost_matrix(source, target, p=self.p)
         P = np.zeros([n,m]) + 1 / n / m
-        converr = np.inf
+
         converrlist = np.zeros(self.niter) + np.inf
         for t in range(0, self.niter):
             
             # compute cost matrices
-            cost_x = self._compute_cost_matrix(source, Cx, p=self.p)
-            cost_z = self._compute_cost_matrix(Cx, Cy, p=self.p)
-            cost_y = self._compute_cost_matrix(Cy, target, p=self.p)
+            cost_x = compute_cost_matrix(source, Cx, p=self.p)
+            cost_z = compute_cost_matrix(Cx, Cy, p=self.p)
+            cost_y = compute_cost_matrix(Cy, target, p=self.p)
             Kx = np.exp(-self.intensity[0] * cost_x / self.epsilon)
             Kz = np.exp(-self.intensity[1] * cost_z / self.epsilon_z)
             Ky = np.exp(-self.intensity[2] * cost_y / self.epsilon)
             
             Pt1 = P
-            Px, Py, Pz, P = self._latent_ot_known_anchors(Kx, Kz, Ky)  # update trans. plan
+            Px, Py, Pz, P = self.update_transport_plans(Kx, Kz, Ky)  # update trans. plan
 
             # check for convergence
             converr = LA.norm(P - Pt1) / LA.norm(Pt1)
             converrlist[t] = converr
             if converr < self.tolratio:
                 break
-            
 
             # update anchors
             if t < self.niter - 1:
-                Cx, Cy = self._compute_anchors(Px, Py, Pz, source, target)
-        # optimal transport
-        Pot, _ = solve_ot(mu,nu,cost_xy)
-        return Px, Py, Pz, P, Pot, Cx, Cy, t, converrlist
+                Cx, Cy = self.update_anchors(Px, Py, Pz, source, target)
 
-    def _compute_cost_matrix(self, source, target, p=2):
-        cost_matrix = np.sum(np.power(source.reshape([source.shape[0], 1, source.shape[1]]) -
-                                      target.reshape([1, target.shape[0], target.shape[1]]),
-                                      p), axis=-1) 
-        return cost_matrix
-    
+        self.Cx, self.Cy = Cx, Cy
+        self.Px_, self.Py_, self.Pz_, self.P_ = Px, Py, Pz, P
 
-    def _compute_kmeans_centroids(self, data, **kwargs):
-        kmeans = KMeans(**kwargs).fit(data)
-        return kmeans.cluster_centers_
-
-    def _latent_ot_known_anchors(self, Kx, Kz, Ky, niter=100, tol=1e-20, epsilon=0, clip_val=np.inf, epsilon1 = 0):
+    def update_transport_plans(self, Kx, Kz, Ky, niter=100, tol=1e-20, epsilon=0, clip_val=np.inf, epsilon1 = 0):
         dimx = Kx.shape[0]
         dimy = Ky.shape[1]
         dimz1, dimz2 = Kz.shape
@@ -121,42 +109,55 @@ class LOT:
         P = np.dot(Px / z1.T, np.dot(Pz, Py / z2))
         return Px, Py, Pz, P
 
-    def _compute_anchors(self, Px, Py, Pz, source, target):
+    def update_anchors(self, Px, Py, Pz, source, target):
         n = source.shape[0]
         m = target.shape[0]
         Px = self.intensity[0] * Px
         Pz = self.intensity[1] * Pz
         Py = self.intensity[2] * Py
 
-        temp = np.concatenate((np.diagflat(Px.T.dot(np.ones([n, 1])) + Pz.dot(np.ones([self.n_cluster_target, 1]))),
-                               -Pz),
-                              axis=1)
-        temp1 = np.concatenate((-Pz.T,
-                                np.diagflat(Py.dot(np.ones([m, 1])) + Pz.T.dot(np.ones([self.n_cluster_source, 1])))),
-                               axis=1)
+        temp = np.concatenate((np.diagflat(Px.T.dot(np.ones([n, 1])) +
+                                           Pz.dot(np.ones([self.n_target_anchors, 1]))), -Pz), axis=1)
+        temp1 = np.concatenate((-Pz.T, np.diagflat(Py.dot(np.ones([m, 1])) +
+                                                   Pz.T.dot(np.ones([self.n_source_anchors, 1])))), axis=1)
         temp = np.concatenate((temp, temp1), axis=0)
         sol = np.concatenate((source.T.dot(Px), target.T.dot(Py.T)), axis=1).dot(LA.inv(temp))
-        Cx = sol[:, 0:self.n_cluster_source].T
-        Cy = sol[:, self.n_cluster_source:self.n_cluster_source + self.n_cluster_target].T
+        Cx = sol[:, 0:self.n_source_anchors].T
+        Cy = sol[:, self.n_source_anchors:self.n_source_anchors + self.n_target_anchors].T
         return Cx, Cy
 
+    def transport(self, source, target):
+        n = source.shape[0]
+        m = target.shape[0]
+        Cx_lot = self.Px_.T.dot(source) / (self.Px_.T.dot(np.ones([n, 1])) + 10 ** -20)
+        Cy_lot = self.Py_.dot(target) / (self.Py_.dot(np.ones([m, 1])) + 10 ** -20)
+        transported = source + np.dot(
+            np.dot(
+                self.Px_ / np.sum(self.Px_, axis=1).reshape([n, 1]),
+                self.Pz_ / np.sum(self.Pz_, axis=1).reshape([self.n_source_anchors, 1])
+            ),
+            Cy_lot) - np.dot(self.Px_ / np.sum(self.Px_, axis=1).reshape([n, 1]), Cx_lot)
+        return transported
 
+    def robust_transport(self, source, target, threshold=0.8, decay=0):
+        n = source.shape[0]
+        m = target.shape[0]
+        Cx_lot = self.Px_.T.dot(source) / (self.Px_.T.dot(np.ones([n, 1])) + 10 ** -20)
+        Cy_lot = self.Py_.dot(target) / (self.Py_.dot(np.ones([m, 1])) + 10 ** -20)
 
-def solve_ot(mu,nu,cost_matrix):
-    n, m = cost_matrix.shape
-    ot_matrix = ot.emd(mu.reshape(-1), nu.reshape(-1), cost_matrix)
-    ot_value = ot.emd2(mu.reshape(-1), nu.reshape(-1), cost_matrix)
-    return ot_matrix, ot_value
+        maxPz = np.max(self.Pz_, axis=1)
+        Pz_robust = self.Pz_.copy()
 
+        for i in range(0, self.n_source_anchors):
+            for j in range(0, self.n_target_anchors):
+                if self.Pz_[i, j] < maxPz[i] * threshold:
+                    Pz_robust[i, j] = self.Pz_[i, j] * decay
+        Pz_robust = Pz_robust / np.sum(Pz_robust, axis=1).reshape([self.n_source_anchors, 1]) * \
+                    np.sum(self.Pz_, axis=1).reshape([self.n_source_anchors, 1])
 
-
-
-def get_transport_plan(ot_matrix):
-    """Return max correspondence"""
-    map_source2target = np.argmax(ot_matrix, axis=1)
-    map_target2source = np.argmax(ot_matrix, axis=0)
-    return map_source2target, map_target2source
-
-
-
-
+        transported = source + np.dot(
+            np.dot(
+                self.Px_ / np.sum(self.Px_, axis=1).reshape([n, 1]),
+                Pz_robust / np.sum(Pz_robust, axis=1).reshape([self.n_source_anchors, 1])
+            ), Cy_lot) - np.dot(self.Px_ / np.sum(self.Px_, axis=1).reshape([n, 1]), Cx_lot)
+        return transported
