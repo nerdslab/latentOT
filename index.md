@@ -6,6 +6,7 @@ Optimal transport (OT) is a widely used technique for distribution alignment, wi
 ## Method
 The main idea behind LOT is to factorize the transport plan into three components, where mass is moved: (i) from individual source points to source anchors, (ii) from the source anchors to target anchors, and (iii) from target anchors to individual target points. This is illustrated in Figure 1.
 ![](imgs/illus.png)
+
 **Figure 1: A transport consists of moving mass from the data to anchors, and the anchors to anchors**
 
 To translate the idea into mathematics, we propose the Latent Optimal Transport (LOT ) which solves the following optimization.
@@ -14,12 +15,18 @@ To translate the idea into mathematics, we propose the Latent Optimal Transport 
 
 ![](https://latex.codecogs.com/svg.latex?s.t.~\mathbf{P}_x1=\mu,~\mathbf{P}^T_y1=\nu,~\mathbf{P}^T_x1=z_x,~\mathbf{P}_y1=z_y,~\mathbf{P}_z1=z_x,~\mathbf{P}^T_z1=z_y)
 
-The output transport is low-rank and decomposed into 3 pieces:
+The output transport is low-rank and decomposed into 3 pieces shown in Figure 2.
 
 ![](https://latex.codecogs.com/svg.latex?\mathbf{P}=\mathbf{P}_{x}%20\operatorname{diag}\left(\mathbf{u}_{z}^{-1}\right)%20\mathbf{P}_{z}%20\operatorname{diag}\left(\mathbf{v}_{z}^{-1}\right)%20\mathbf{P}_{y})
 
-The outer 2 pieces represents the clustering of data, and the inner piece represents the alignment of data.
 ![](imgs/lott.png)
+
+**Figure 2: The factored plan decomposes into 3 compoenents. The outer 2 pieces represents the clustering of data, and the inner piece represents the alignment of data.**
+
+By using number of anchors as a free hyperparameters for the source and target, LOT is able to capture different kinds of structures. An example is shown in Figure 3.
+
+![](imgs/figure1_red.png)
+**Figure 3: Comparison of transport plans obtained for different methods applied to clustered data**
 
 ## Results
 The low-rank decomposition in LOT allowed us to visualize transport between the source to anchors and then from anchors to the target again. This highlights the interpretability of our approach, with the middle transport plan Pz providing a concise map of interactions between class manifolds. 
@@ -28,12 +35,10 @@ We show this in a setting where LOT is used to fix domain shift introduced in a 
 
 LOT succesfully bridges the gap by aligning the source and target distributions, and we can see in figure 2 how the class manifolds are being transpored to their correct correspondant, even in the unbalanced case.
 
-![](imgs/figure1_red.png)
-**Figure 2: Comparison of transport plans obtained for different methods applied to clustered data**
 
 ![](imgs/minist.png)
 ![](imgs/figure2.png)
-**Figure 3: Visualization of transport of handwritten digits**
+**Figure 4: (Top) Examples of MNIST-USPS samples and dropout mask. (Bottom) Visualization of transport of handwritten digits**
 
 ## Citation
 
