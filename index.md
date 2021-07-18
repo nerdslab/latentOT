@@ -26,12 +26,16 @@ LOT succesfully bridges the gap by aligning the source and target distributions,
 ## Citation
 
 ```bibtex
-@misc{lin2020making,
-      title={Making transport more robust and interpretable by moving data through a small number of anchor points}, 
-      author={Chi-Heng Lin and Mehdi Azabou and Eva L. Dyer},
-      year={2020},
-      eprint={2012.11589},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+@InProceedings{lin2021,
+  title = 	 {Making transport more robust and interpretable by moving data through a small number of anchor points},
+  author =       {Lin, Chi-Heng and Azabou, Mehdi and Dyer, Eva},
+  booktitle = 	 {Proceedings of the 38th International Conference on Machine Learning},
+  pages = 	 {6631--6641},
+  year = 	 {2021},
+  editor = 	 {Meila, Marina and Zhang, Tong},
+  volume = 	 {139},
+  series = 	 {Proceedings of Machine Learning Research},
+  month = 	 {18--24 Jul},
+  publisher =    {PMLR},
 }
 ```
