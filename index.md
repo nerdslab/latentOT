@@ -10,6 +10,7 @@ The factorized form is written as follows:
 
 ![](https://latex.codecogs.com/svg.latex?\mathbf{P}=\mathbf{P}_{x}%20\operatorname{diag}\left(\mathbf{u}_{z}^{-1}\right)%20\mathbf{P}_{z}%20\operatorname{diag}\left(\mathbf{v}_{z}^{-1}\right)%20\mathbf{P}_{y})
 
+![](imgs/minist.png)
 ![](imgs/figure1_red.png)
 **Figure 1: Comparison of transport plans obtained for different methods applied to clustered data**
 
