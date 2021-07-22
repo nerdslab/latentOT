@@ -3,11 +3,9 @@
 This is the implementation of the low-rank alignment method **LOT** - https://arxiv.org/abs/2012.11589
 
 # Overview
-Latent optimal transport is a low-rank distributional alignment technique. 
-It is suitable for data exhibiting a clustered structure. LOT leverages clustering to make transport
-more robust to noise and outliers.
+Latent optimal transport is a low-rank distributional alignment technique that is suitable for data exhibiting clustered structure. LOT leverages clustering to make transport more robust to noise and outliers.
 
-Users could customize their cost matrix to fit their clustering strategies.
+Users can customize their cost matrix to fit their clustering strategies.
 The algorithm requires two numbers of anchors to be specified. The numbers naturally correspond to the numbers of 
 clusters for the source and target.
 
